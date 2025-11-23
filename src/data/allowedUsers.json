@@ -1,0 +1,11 @@
+
+[
+  {
+    "username": "student1",
+    "passwordHash": "123456789gg" 
+  },
+  {
+    "username": "teacher",
+    "passwordHash": "$2y$10$4aM..."
+  }
+]

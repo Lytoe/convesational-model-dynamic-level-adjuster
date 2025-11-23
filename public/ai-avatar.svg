@@ -1,0 +1,8 @@
+<!-- public/ai-avatar.svg -->
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="60" cy="60" r="58" fill="#1e1e2f" stroke="#58a6ff" stroke-width="4"/>
+  <circle cx="40" cy="50" r="8" fill="#ffffff"/>
+  <circle cx="80" cy="50" r="8" fill="#ffffff"/>
+  <path d="M40 85 Q60 100 80 85" stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <rect x="52" y="20" width="16" height="6" rx="3" fill="#58a6ff"/>
+</svg>

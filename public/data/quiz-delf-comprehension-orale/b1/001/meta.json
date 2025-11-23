@@ -1,0 +1,14 @@
+{
+  "id": "001",
+  "level": "B1",
+  "title": "Exemple Officiel - Session Coll",
+  "mode": "real",
+  "durationMinutes": 25,
+  "exercises": 3,
+  "source": "France Éducation International",
+  "audioFiles": [
+    "/data/comprehension/delf/b1/001/audio/001_ex1.mp3",
+    "/data/comprehension/delf/b1/001/audio/001_ex2.mp3",
+    "/data/comprehension/delf/b1/001/audio/001_ex3.mp3"
+  ]
+}

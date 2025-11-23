@@ -1,0 +1,118 @@
+.inputWrapper {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.hintSection {
+  margin-bottom: 0.8rem;
+}
+
+.hintToggle {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+
+.hintToggle:hover {
+  color: var(--accent-hover);
+}
+
+.hintBox {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.reasoning {
+  font-style: italic;
+  color: var(--muted-text);
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.controlsRow {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.inputField {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 1rem;
+  transition: border-color var(--transition);
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.iconButton {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+.iconButton:hover {
+  transform: scale(1.1);
+  color: var(--accent-hover);
+}
+
+.recording {
+  animation: pulse 1s infinite;
+}
+
+.sendButton {
+  padding: 0.5rem 1.2rem;
+  background: var(--accent);
+  color: white;
+  font-weight: 500;
+  font-size: 1rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.sendButton:hover {
+  background: var(--accent-hover);
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* 📱 Responsive */
+@media (max-width: 600px) {
+  .inputField {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .sendButton {
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+  }
+
+  .hintBox {
+    font-size: 0.9rem;
+  }
+}

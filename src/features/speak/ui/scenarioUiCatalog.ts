@@ -1,0 +1,26 @@
+// src/features/speak/ui/scenarioUiCatalog.ts
+export const scenarioUi: Record<string, { thumb?: string }> = {
+  cafe_ordering:    { thumb: '/img/scenarios/cafe.jpg' },
+  doctor_visit:     { thumb: '/img/scenarios/doctor.jpg' },
+  free_discussion:  { thumb: '/img/scenarios/talk.jpg' },
+
+  airport_checkin:  { thumb: '/img/scenarios/airport.jpg' },
+  hotel_checkin:    { thumb: '/img/scenarios/hotel.jpg' },
+  metro_directions: { thumb: '/img/scenarios/metro.jpg' },
+  supermarket_return:{ thumb: '/img/scenarios/market.jpg' },
+  bank_account:     { thumb: '/img/scenarios/bank.jpg' },       
+  job_interview:    { thumb: '/img/scenarios/interview.jpg' },
+  colocation_rules: { thumb: '/img/scenarios/flat.jpg' },
+  prefecture:       { thumb: '/img/scenarios/admin.jpg' },
+  gym_membership:   { thumb: '/img/scenarios/gym.jpg' },
+  bookshop_order:   { thumb: '/img/scenarios/book.jpg' },
+  pharmacy:         { thumb: '/img/scenarios/pharmacy.jpg' },
+  restaurant_allergy:{ thumb: '/img/scenarios/restaurant.jpg' },
+  lost_parcel:      { thumb: '/img/scenarios/parcel.jpg' },
+  meeting_opinion:  { thumb: '/img/scenarios/meeting.jpg' },
+  phone_voicemail:  { thumb: '/img/scenarios/phone.jpg' },
+  customer_service: { thumb: '/img/scenarios/support.jpg' },
+  neighbor_noise:   { thumb: '/img/scenarios/neighbor.jpg' },
+  specialist_booking:{ thumb: '/img/scenarios/hospital.jpg' },
+  cooking_workshop: { thumb: '/img/scenarios/cooking.jpg' },
+};

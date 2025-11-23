@@ -1,0 +1,71 @@
+.card{
+  all: unset; cursor: pointer; position: relative;
+  display: grid; grid-template-rows: 160px auto;
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+  border-radius: var(--r-lg);
+  box-shadow: var(--elev-0);
+  overflow: hidden;
+  animation: rise .28s var(--ease) both;
+  
+  transition: transform var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease), border-color var(--t-fast) var(--ease);
+}
+@keyframes rise{ from{ opacity:0; transform: translateY(6px);} to{ opacity:1; transform:none; } }
+.card:hover{ transform: translateY(-2px); box-shadow: var(--elev-1); border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); }
+.card:focus-visible{ outline: none; box-shadow: var(--elev-1), var(--ring); }
+
+.thumb{
+  background-size: cover; background-position: center;
+  background-image: linear-gradient(135deg, rgba(var(--accent-rgb), .14), rgba(var(--text-rgb), .06));
+}
+.thumb[data-hasimg="false"]{
+  background-image:
+    linear-gradient(135deg, rgba(var(--accent-rgb), .14), rgba(var(--text-rgb), .06)),
+    repeating-linear-gradient(45deg, transparent 0 6px, rgba(var(--text-rgb), .04) 6px 12px);
+}
+/* shimmer hint (cheap) */
+.thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--text-rgb), 0.18),
+    transparent
+  );
+  transform: translateX(-90%);
+  animation: shimmer 4.5s var(--ease) infinite;
+}
+
+@keyframes shimmer{ to{ transform: translateX(100%);} }
+
+
+.body{ padding: var(--s-3) var(--s-4) var(--s-4); display: grid; gap: 6px; }
+.title{ margin: 0; font-size: .98rem; letter-spacing:.1px; }
+.desc{ margin: 0; color: var(--muted-text); font-size: .9rem; line-height: 1.35; }
+
+.tags{ display:flex; gap:6px; flex-wrap:wrap; margin-top:2px; opacity:.85; }
+.tag{
+  font-size:.72rem; padding:2px 8px; border-radius:999px;
+  background: color-mix(in srgb, var(--overlay-bg) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+/* CEFR badge */
+.badge{
+  position:absolute; top:8px; left:8px;
+  padding:3px 9px; border-radius:999px; font-weight:700; font-size:.8rem;
+  color:#000; border:1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  box-shadow: var(--shadow-sm);
+  animation: glow 2.2s ease-in-out 2 alternate; /* 3 pulses then stop */
+}
+@keyframes glow{ from{ box-shadow:0 0 0 rgba(0,0,0,0);} to{ box-shadow:0 0 0 6px rgba(var(--accent-rgb), .08);} }
+
+.badge[data-level="A1"]{ background: var(--cefr-a1); }
+.badge[data-level="A2"]{ background: var(--cefr-a2); }
+.badge[data-level="B1"]{ background: var(--cefr-b1); }
+.badge[data-level="B2"]{ background: var(--cefr-b2); }
+.badge[data-level="C1"]{ background: var(--cefr-c1); }
+.badge[data-level="C2"]{ background: var(--cefr-c2); }

@@ -1,0 +1,128 @@
+[
+  {
+    "exercise": 1,
+    "type": "mcq",
+    "audioFile": "/data/quiz-delf-comprehension-orale/b1/001/audio/001_ex1.mp3",
+    "questions": [
+      {
+        "text": "Pourquoi Célia organise-t-elle un week-end à la montagne ?",
+        "choices": ["A. Pour ses vacances", "B. Pour son anniversaire", "C. Pour le travail"],
+        "answer": "B"
+      },
+      {
+        "text": "Où va se passer le week-end ?",
+        "choices": ["A. Chez des amis", "B. À l’hôtel", "C. Dans une maison de famille"],
+        "answer": "C"
+      },
+      {
+        "text": "Combien de personnes vont participer ?",
+        "choices": ["A. Dix", "B. Vingt", "C. Trente"],
+        "answer": "A"
+      },
+      {
+        "text": "Quand Lilian arrivera-t-il ?",
+        "choices": ["A. Le samedi matin", "B. Le samedi soir", "C. Le dimanche matin"],
+        "answer": "B"
+      },
+      {
+        "text": "Que doit apporter chaque personne ?",
+        "choices": ["A. À boire", "B. À manger", "C. Des cadeaux"],
+        "answer": "B"
+      },
+      {
+        "text": "Qu’est-ce que Célia espère pour le dimanche ?",
+        "choices": ["A. Qu’il neige", "B. Qu’il fasse beau", "C. Qu’il pleuve"],
+        "answer": "A"
+      },
+      {
+        "text": "Qu’est-ce que Célia veut comme cadeau ?",
+        "choices": ["A. Un bijou", "B. Un pull", "C. Rien"],
+        "answer": "C"
+      }
+    ]
+  },
+  {
+    "exercise": 2,
+    "type": "mcq",
+    "audioFile": "/data/quiz-delf-comprehension-orale/b1/001/audio/001_ex2.mp3",
+    "questions": [
+      {
+        "text": "Quel est le but de l’association ?",
+        "choices": ["A. Offrir des vêtements", "B. Faire du shopping ensemble", "C. Vendre des produits"],
+        "answer": "B"
+      },
+      {
+        "text": "Quel est le problème d’Hayette ?",
+        "choices": ["A. Elle est malvoyante", "B. Elle est sourde", "C. Elle est malade"],
+        "answer": "A"
+      },
+      {
+        "text": "Que fait un bénévole ?",
+        "choices": ["A. Il achète les vêtements", "B. Il aide à choisir", "C. Il paie les vêtements"],
+        "answer": "B"
+      },
+      {
+        "text": "Qu’apprend Hayette grâce aux bénévoles ?",
+        "choices": ["A. À coudre", "B. À se maquiller", "C. À s’habiller différemment"],
+        "answer": "C"
+      },
+      {
+        "text": "Comment les collègues d’Hayette réagissent ?",
+        "choices": ["A. Ils critiquent", "B. Ils s’intéressent", "C. Ils se moquent"],
+        "answer": "B"
+      },
+      {
+        "text": "Pourquoi les vêtements sont importants ?",
+        "choices": ["A. Pour être beau", "B. Pour s’intégrer", "C. Pour plaire"],
+        "answer": "B"
+      },
+      {
+        "text": "Comment devenir bénévole ?",
+        "choices": ["A. En écrivant une lettre", "B. En appelant un responsable", "C. En assistant à une réunion"],
+        "answer": "C"
+      }
+    ]
+  },
+  {
+    "exercise": 3,
+    "type": "mcq",
+    "audioFile": "/data/quiz-delf-comprehension-orale/b1/001/audio/001_ex3.mp3",
+    "questions": [
+      {
+        "text": "Que fait l’entreprise Baluchon ?",
+        "choices": ["A. Elle vend des vêtements", "B. Elle livre des repas", "C. Elle organise des formations"],
+        "answer": "B"
+      },
+      {
+        "text": "Pourquoi François a-t-il créé Baluchon ?",
+        "choices": ["A. Pour gagner de l’argent", "B. Pour aider les salariés à bien manger", "C. Pour cuisiner avec ses amis"],
+        "answer": "B"
+      },
+      {
+        "text": "Quels produits utilise Baluchon ?",
+        "choices": ["A. Des produits industriels", "B. Des produits étrangers", "C. Des produits locaux"],
+        "answer": "C"
+      },
+      {
+        "text": "Qui travaille chez Baluchon ?",
+        "choices": ["A. Des professionnels de la cuisine", "B. Des personnes en difficulté", "C. Des étudiants en cuisine"],
+        "answer": "B"
+      },
+      {
+        "text": "Que doivent savoir faire les candidats ?",
+        "choices": ["A. Lire et écrire", "B. Parler anglais", "C. Cuisiner"],
+        "answer": "A"
+      },
+      {
+        "text": "Où sont préparés les repas ?",
+        "choices": ["A. Dans une école", "B. Chez François", "C. Dans une cuisine prêtée"],
+        "answer": "C"
+      },
+      {
+        "text": "Que prépare l’équipe aujourd’hui ?",
+        "choices": ["A. Une soupe de courgette", "B. Une crème de courgette", "C. Une salade de courgette"],
+        "answer": "B"
+      }
+    ]
+  }
+]

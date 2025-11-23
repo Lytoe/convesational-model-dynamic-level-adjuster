@@ -1,0 +1,7 @@
+.feedback {
+  background: var(--overlay-bg);
+  padding: 0.8rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted-text);
+  font-size: 0.9rem;
+}

@@ -1,0 +1,111 @@
+/* src/features/speak/styles/SpeakingSessionPage.module.css */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  /* min-height allows page to grow; body/viewport gets the single scrollbar */
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  position: relative;
+}
+
+/* Toast: fixed so you see it even when scrolled */
+.toast {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+/* Sticky secondary navbar */
+.headerBar {
+  position: sticky;
+  top: 0;               /* sits right under your main site navbar */
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+}
+
+.leftHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scenarioTitle {
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* Cute, obvious “Niveau actuel” chip, always visible in the sticky bar */
+.levelChip {
+  display: inline-grid;
+  place-items: center;
+  min-width: 46px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), #7a5cff);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.35);
+}
+
+@keyframes pulseBadge {
+  0%   { transform: scale(1);   filter: drop-shadow(0 0 0 rgba(122,92,255,0)); }
+  50%  { transform: scale(1.06); filter: drop-shadow(0 0 12px rgba(122,92,255,0.5)); }
+  100% { transform: scale(1);   filter: drop-shadow(0 0 0 rgba(122,92,255,0)); }
+}
+.pulse { animation: pulseBadge 0.85s ease-in-out; }
+
+/* Two-column grid (50/50) — NO overflow here; the page scrolls */
+.grid {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 50/50 */
+  column-gap: 16px;
+  row-gap: 12px;
+  padding: 12px 16px;
+  /* IMPORTANT: no inner scrollbar */
+  overflow: visible;
+  background: var(--bg);
+}
+
+.row { display: contents; }
+.leftCell, .rightCell { min-width: 0; }
+
+.footerBar {
+  flex: 0 0 auto;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .leftHeader { gap: 8px; }
+  .levelChip { min-width: 40px; height: 26px; padding: 0 8px; }
+}
+.levelChip{ padding: 4px 10px; border-radius: 999px; font-weight: 700; color: #000; }
+.levelChip[data-level="A1"]{ background: var(--cefr-a1); }
+.levelChip[data-level="A2"]{ background: var(--cefr-a2); }
+.levelChip[data-level="B1"]{ background: var(--cefr-b1); }
+.levelChip[data-level="B2"]{ background: var(--cefr-b2); }
+.levelChip[data-level="C1"]{ background: var(--cefr-c1); }
+.levelChip[data-level="C2"]{ background: var(--cefr-c2); }

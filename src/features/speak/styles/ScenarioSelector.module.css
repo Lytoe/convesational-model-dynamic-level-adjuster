@@ -1,0 +1,53 @@
+.page{ padding: 24px; }
+.h2{ margin: 0 0 14px; }
+.h3{ margin: 16px 0 8px; }
+
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.sliderBlock{
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+}
+.levelHelp{ margin: 8px 0 0; color: var(--muted-text); }
+.page{ padding: 24px; }
+
+.stickyBar{
+  position: sticky; top: 12px; z-index: 2;
+  background: color-mix(in srgb, var(--card) 86%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: var(--r-md);
+  box-shadow: var(--elev-0);
+  padding: var(--s-3) var(--s-4);
+  margin-bottom: var(--s-4);
+}
+
+.levelRow{ display:flex; align-items:center; justify-content:space-between; margin-bottom: var(--s-2);}
+.levelText{ font-weight:600; letter-spacing:.1px; }
+.levelBadge{
+  padding: 4px 10px; border-radius: 999px; font-weight:700; color:#000;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+.levelBadge[data-level="A1"]{ background: var(--cefr-a1); }
+.levelBadge[data-level="A2"]{ background: var(--cefr-a2); }
+.levelBadge[data-level="B1"]{ background: var(--cefr-b1); }
+.levelBadge[data-level="B2"]{ background: var(--cefr-b2); }
+.levelBadge[data-level="C1"]{ background: var(--cefr-c1); }
+.levelBadge[data-level="C2"]{ background: var(--cefr-c2); }
+
+.levelNote{ margin-top: 6px; color: var(--muted-text); font-size:.85rem; }
+.h2{ margin: 10px 0 12px; font-size: clamp(1.12rem, 1vw + 1rem, 1.35rem); }
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: var(--s-3);
+}

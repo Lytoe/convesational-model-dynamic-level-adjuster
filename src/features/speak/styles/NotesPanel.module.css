@@ -1,0 +1,215 @@
+.panel {
+  background: var(--card);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  color: var(--text);
+  max-height: 100%;
+  overflow-y: auto;
+  font-family: var(--font-sans);
+}
+
+.panel h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.section h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-dark);
+}
+
+.section ul {
+  padding-left: 1rem;
+  list-style: none;
+  margin: 0;
+}
+
+.section li {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.example {
+  font-style: italic;
+  color: var(--muted-text);
+  margin-left: 0.3rem;
+}
+
+.empty {
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--muted-text);
+  background: var(--input-bg);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  border: 1px dashed var(--border);
+  font-style: italic;
+}
+
+/* ✅ Correction colors handled inline, but add safety fallbacks */
+.section li span {
+  transition: color 0.2s ease;
+}
+
+/* 📱 Responsive */
+@media (max-width: 600px) {
+  .panel {
+    padding: 1rem 1.2rem;
+  }
+
+  .panel h3 {
+    font-size: 1.1rem;
+  }
+
+  .section h4 {
+    font-size: 1rem;
+  }
+
+  .section li {
+    font-size: 0.9rem;
+  }
+}
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 500;
+  color: white;
+  margin-right: 0.5rem;
+}
+
+.vocabulary {
+  background-color: #3ab29f;
+}
+
+.grammar {
+  background-color: #6a5acd;
+}
+
+.alternative {
+  background-color: #f39c12;
+}
+
+.wrong {
+  color: var(--error);
+  font-weight: 600;
+}
+
+.correct {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.explanation {
+  font-size: 0.85rem;
+  color: var(--muted-text);
+  margin-top: 0.15rem;
+}
+/* legacy aggregated panel (kept for reuse in other screens) */
+.legacyPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-weight: 700;
+}
+
+.section {
+  margin-top: 0.25rem;
+}
+
+.empty {
+  opacity: 0.7;
+}
+
+/* ===== per-message NoteCard used in the 2nd column ===== */
+
+.noteCard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.noteCardEmpty {
+  opacity: 0.4;
+  font-style: italic;
+  padding: 8px 4px;
+}
+
+.block { }
+
+.blockTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.correctionsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kpills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.kpill {
+  border: 1px dashed var(--border);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.85rem;
+  background: rgba(255,255,255,0.02);
+}
+
+.explanation {
+  margin-top: 2px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.reasoning {
+  font-size: 0.95rem;
+}
+
+.wrong {
+  color: var(--danger, #d33);
+  font-weight: 600;
+}
+
+.correct {
+  color: var(--success, #1a8f4d);
+  font-weight: 700;
+}
+
+.sep {
+  display: inline-block;
+  margin: 0 6px;
+  opacity: 0.6;
+}
+
+/* keep your existing badge + type color styles if already defined */

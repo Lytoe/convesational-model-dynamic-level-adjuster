@@ -1,0 +1,43 @@
+
+
+.messageWrapper {
+  display: block;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.secondaryText {
+  margin-left: 2.5rem;
+  font-size: 0.9rem;
+  color: var(--muted-text);
+  background: var(--overlay-bg);
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  max-width: 70%;
+}
+
+/* NEW: subtle AI typing bubble */
+
+/* src/features/speak/styles/ChatArea.module.css */
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* Let the PAGE own the scroll */
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+.messageWrapper { display: block; }
+
+.aiTypingBubble {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  min-height: 28px;
+  font-weight: 700;
+}

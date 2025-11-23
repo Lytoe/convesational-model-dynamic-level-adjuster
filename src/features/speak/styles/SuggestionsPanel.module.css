@@ -1,0 +1,91 @@
+/* Suggestions row/chips */
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  background: var(--overlay-bg, rgba(255,255,255,0.04));
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
+  border-radius: 10px;
+  backdrop-filter: saturate(140%) blur(6px);
+}
+
+.suggestion {
+  --chip-bg: var(--choice-bg, rgba(255,255,255,0.06));
+  --chip-border: var(--border, rgba(255,255,255,0.14));
+  --chip-text: var(--text, #e8eaed);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--chip-text);
+  background: var(--chip-bg);
+  border: 1px solid var(--chip-border);
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 120ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  outline: none;
+}
+
+.suggestion:hover {
+  background: var(--highlight-hover, rgba(10,132,255,0.12));
+  border-color: rgba(10,132,255,0.36);
+  box-shadow: 0 4px 16px rgba(10,132,255,0.15);
+}
+
+.suggestion:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.suggestion:focus-visible {
+  box-shadow: 0 0 0 3px rgba(10,132,255,0.35);
+  border-color: rgba(10,132,255,0.55);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .suggestion { transition: none; }
+}
+
+/* Level badge */
+.levelBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent, #0a84ff), #0a6de1);
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  box-shadow: 0 6px 20px rgba(10, 132, 255, 0.35);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: saturate(160%) blur(8px);
+  z-index: 2;
+}
+
+.pulse {
+  animation: levelPulse 800ms ease-out 1;
+}
+
+@keyframes levelPulse {
+  0%   { transform: scale(1);   box-shadow: 0 0 0 0 rgba(10,132,255,.55); }
+  70%  { transform: scale(1.06); box-shadow: 0 0 0 14px rgba(10,132,255,0); }
+  100% { transform: scale(1); }
+}
+.levelChip{
+  padding: 4px 10px; border-radius: 999px; font-weight: 700; color: #000;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+}
+.levelChip[data-level="A1"]{ background: var(--cefr-a1); }
+.levelChip[data-level="A2"]{ background: var(--cefr-a2); }
+.levelChip[data-level="B1"]{ background: var(--cefr-b1); }
+.levelChip[data-level="B2"]{ background: var(--cefr-b2); }
+.levelChip[data-level="C1"]{ background: var(--cefr-c1); }
+.levelChip[data-level="C2"]{ background: var(--cefr-c2); }
+
