@@ -1,6 +1,5 @@
 import { SessionState } from '../domain/SessionState';
 import { Message } from '../domain/Message';
-// ⛔ removed: adjustDifficulty
 import { updateGamification } from './updateGamification';
 
 import { ILlmClient } from '@/features/speak/ports/ILlmClient';
@@ -9,11 +8,26 @@ import { GeminiClient } from '@/features/speak/infra/llm/GeminiClient';
 import { scoreTurn } from '@/features/speak/usecases/level/scoreTurn';
 import { decide } from '@/features/speak/usecases/level/adjuster';
 
-
 import type { SessionViewDTO } from '../models/dto/SessionViewDTO';
 import { toViewDTO } from './selectors/selectView';
 
-// Keep class prototype when returning updated state
+// Add/Import your Turn DTO here, or import from 'models/dto/LlmTurnDTO'
+export type LlmTurnDTO = {
+  aiReply: { part1: string; part2: string };
+  corrections: { userText: string; correction: string; explanation: string; severity?: "minor" | "major" }[];
+  hint: { responses: [string, string]; reasoning: string };
+  keyPhrases: string[];
+  newLevel: "B1" | null; // If multiple levels: "A1" | "A2" | "B1" | "B2" | "C1" | "C2" | null
+  modelUserLevelGuess?: "B1"; // Or union type if needed
+};
+
+// If not implemented, stub logSession:
+async function logSession(userId: string, session: SessionState) {
+  // Persist logic here if needed (DB, file, etc.)
+  return;
+}
+
+// Utility: Deeply clone session object
 function cloneSession(session: SessionState): SessionState {
   return Object.assign(
     Object.create(Object.getPrototypeOf(session)),
@@ -22,13 +36,13 @@ function cloneSession(session: SessionState): SessionState {
   );
 }
 
-// Port client (DI later if you want)
+// DI Port pattern
 const llmClient: ILlmClient = new GeminiClient();
 
 export type ContinueOpts = {
   userId?: string;
-  hintUsed?: boolean;          // from UI (💡 button)
-  translationUsed?: boolean;   // set true if user tapped Translate before sending
+  hintUsed?: boolean;
+  translationUsed?: boolean;
 };
 
 export async function continueSession(
@@ -42,18 +56,17 @@ export async function continueSession(
 
   // Cap check
   if (session.currentTurn >= session.maxTurns) {
-    console.log('[continueSession] Max turns reached. Ending session.');
     session.isComplete = true;
     const state = cloneSession(session);
     return { state, view: toViewDTO(state) };
   }
 
-  // Add user message + latency
+  // Add user message
   const now = Date.now();
   const userMsg = new Message(now.toString(), 'user', userInput);
   session.addMessage(userMsg);
-  console.log('[continueSession] Added User Message:', userMsg);
 
+  // Update latency history
   if (session.aiLastMessageAt) {
     const latency = now - session.aiLastMessageAt;
     const last = session.latencies.at(-1);
@@ -70,23 +83,23 @@ export async function continueSession(
     text: `${m.textPart1 ?? ''} ${m.textPart2 ?? ''}`.trim(),
   }));
 
-  // Keep previous hint to detect follow-through
+  // Save previous hint
   const previousHint = session.hint;
 
-  // --- Call LLM via port ---
+  // --- Call LLM client ---
   const dto: LlmTurnDTO = await llmClient.generateTurn({
     userText: userInput,
     scenario: session.scenarioId || 'Conversation libre',
-    level: session.difficulty,
+    level: "B1", // or session.difficulty if using all levels
     history,
+    passcode: '' // add if your model requires passcode; otherwise remove
   });
 
   const { aiReply, corrections, hint, keyPhrases } = dto;
 
-  // Back-compat suggestions[] for current message (UI will move to view.latest)
+  // Compose suggestions for hint
   const suggestions = [hint.responses[0], hint.responses[1], hint.reasoning].filter(Boolean);
 
-  // Update session.hint (source of truth for selectors/view)
   session.hint = suggestions.length >= 3
     ? { responseA: suggestions[0], responseB: suggestions[1], reasoning: suggestions[2] }
     : null;
@@ -95,41 +108,38 @@ export async function continueSession(
   const aiMsg = new Message(
     Date.now().toString(),
     'ai',
-    aiReply?.part1 || '',
-    aiReply?.part2 || '',
+    aiReply?.part1 ?? '',
+    aiReply?.part2 ?? '',
     undefined,
-    corrections || [],
-    suggestions || [],
-    keyPhrases || []
+    corrections ?? [],
+    suggestions ?? [],
+    keyPhrases ?? []
   );
   session.addMessage(aiMsg);
   session.aiLastMessageAt = aiMsg.timestamp;
-  console.log('[continueSession] Added AI Message with structured feedback:', aiMsg);
 
-  // --- Level v2 (EMA + decision, now AUTHORITATIVE) ---
+  // EMA/Level update logic
   const lastLatency = session.latencies.at(-1);
-  const userText = `${userMsg.textPart1 ?? ''} ${userMsg.textPart2 ?? ''}`.trim();
-
+  const userTextForScore = `${userMsg.textPart1 ?? ''} ${userMsg.textPart2 ?? ''}`.trim();
   const followThrough =
     !!previousHint &&
-    !!userText &&
+    !!userTextForScore &&
     [previousHint.responseA, previousHint.responseB]
       .filter(Boolean)
-      .some((p) => userText.toLowerCase().includes(String(p).toLowerCase()));
+      .some((p) => userTextForScore.toLowerCase().includes(String(p).toLowerCase()));
 
   const hintUsed = Boolean(opts?.hintUsed) || Boolean(followThrough);
   const translationUsed = Boolean(opts?.translationUsed);
 
   const { score, fastTrack } = scoreTurn({
     session,
-    userText,
-    dto,
+    userText: userTextForScore,
     latency: lastLatency,
     hintUsed,
     translationUsed
   });
 
-  // EMA update — smoother (alpha = 0.20)
+  // EMA history update
   session.emaPerformance = Number((0.8 * session.emaPerformance + 0.2 * score).toFixed(4));
   session.emaHistory.push(session.emaPerformance);
   if (session.emaHistory.length > 5) session.emaHistory.shift();
@@ -137,15 +147,15 @@ export async function continueSession(
   const decision = decide({
     current: session.difficulty,
     emaHistory: session.emaHistory,
-    llmNew: dto.newLevel,                // may be null (by design)
-    modelGuess: dto.modelUserLevelGuess, // optional
+    llmNew: dto.newLevel, // null by design if not "B1"
+    modelGuess: dto.modelUserLevelGuess,
     lastChangeTurn: session.lastLevelChangeTurn,
     currentTurn: session.currentTurn,
-    fastTrack,                           // NEW
+    fastTrack,
   });
 
-  // Apply decision to session.difficulty (v2 is authoritative)
-  const ladder = ['A1','A2','B1','B2','C1','C2'] as const;
+  // Level ladder logic
+  const ladder = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
   const oldLevel = session.difficulty;
   let i = ladder.indexOf(oldLevel);
   if (decision === 'up' && i < ladder.length - 1) i++;
@@ -170,10 +180,8 @@ export async function continueSession(
     guess: dto.modelUserLevelGuess ?? '∅',
   });
 
-  // XP / gamification (keep)
   updateGamification(session, session.difficulty);
 
-  // One concise line that’s easy to grep
   console.log(
     `[level] curr:${oldLevel} → ${session.difficulty} ` +
     `llm:${dto.newLevel ?? '∅'} guess:${dto.modelUserLevelGuess ?? '∅'} ` +
@@ -182,7 +190,7 @@ export async function continueSession(
 
   console.log('[continueSession] Updated Session State (after v2 apply):', JSON.stringify(session, null, 2));
 
-  // Persist (optional)
+  // Persist, if needed
   if (opts?.userId) {
     console.log(`[continueSession] Logging session for user: ${opts.userId}`);
     await logSession(opts.userId, session);

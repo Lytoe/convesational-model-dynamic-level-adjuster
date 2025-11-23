@@ -1,18 +1,23 @@
 const MOCK_MODE = false;
 
 import { ILlmClient } from '../../ports/ILlmClient';
-// Remove import if LlmTurnDTO.ts no longer exists
-// import { LlmTurnDTO } from '../../models/dto/LlmTurnDTO';
 import { buildPrompt } from './buildPrompt';
-import { validateLlmOutput, LlmTurnDTO } from './parseAndValidate'; // Use type defined in parseAndValidate.ts
+import { validateLlmOutput, LlmTurnDTO } from './parseAndValidate';
 
 const API_URL = '/api/gemini';
+
+// Helper: Coerce newLevel to "B1" | null
+function asB1OrNull(value: string | null | undefined): "B1" | null {
+  return value === "B1" ? "B1" : null;
+}
 
 export class GeminiClient implements ILlmClient {
   async generateTurn(input: {
     userText: string;
     scenario: string;
+    level: "B1";
     history: Array<{ role: 'user' | 'ai'; text: string }>;
+    passcode: string;
   }): Promise<LlmTurnDTO> {
     // ---- MOCK MODE ----
     if (MOCK_MODE) {
@@ -30,7 +35,7 @@ export class GeminiClient implements ILlmClient {
           reasoning: "Ceci est un retour de test."
         },
         keyPhrases: ["mock", "chat", "test"],
-        newLevel: null,
+        newLevel: null, // mock always returns null/newLevel (or "B1" only)
         modelUserLevelGuess: "B1"
       };
     }
@@ -54,7 +59,7 @@ export class GeminiClient implements ILlmClient {
     console.log('[GeminiClient] /api/gemini response status:', response.status);
 
     const data = await response.json();
-    
+
     console.log('[GeminiClient] /api/gemini raw data:', JSON.stringify(data, null, 2));
 
     if (!response.ok) {
@@ -62,7 +67,14 @@ export class GeminiClient implements ILlmClient {
       throw new Error(errorMsg);
     }
 
-    // Make sure 'result' is returned and in expected format
-    return validateLlmOutput(data.result);
+    // --- Cast and validate result for types ---
+    const validated = validateLlmOutput(data.result);
+
+    // Fix: always narrow newLevel to "B1" | null!
+    return {
+      ...validated,
+      newLevel: asB1OrNull(validated.newLevel),
+      modelUserLevelGuess: validated.modelUserLevelGuess === "B1" ? "B1" : undefined,
+    };
   }
 }
