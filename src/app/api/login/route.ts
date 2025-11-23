@@ -1,29 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Helper to load JSON from env variable or fallback empty
+function loadEnvUsers(key: string) {
+  try {
+    return JSON.parse(process.env[key] || "[]");
+  } catch {
+    return [];
+  }
+}
+function loadEnvSingleUsers(key: string) {
+  try {
+    return JSON.parse(process.env[key] || "{}");
+  } catch {
+    return {};
+  }
+}
+
 // Brute force protection
 let failedAttempts: { [ip: string]: { count: number; lastAttempt: number } } = {};
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_MINUTES = 10;
 
-// Permanent users (infinite use)
-const ALLOWED_USERS = [
-  { username: "sylla", password: "GumF8mIxiDqvdfRZ" },
-  { username: "darksylla", password: "QM?ii99freeHgBTE" },
-  { username: "linus", password: "Freeze4Leafcrow" },
-  { username: "superman", password: "Freeze5tofo" },
-  { username: "batman", password: "avatarAgng" },
-  { username: "voldermort", password: "avatarkorra" },
-  { username: "baryhotter", password: "Freeze4Leafcrow" },
-];
+// Permanent users (infinite use) - set in env: ALLOWED_USERS_JSON
+const ALLOWED_USERS = loadEnvUsers("ALLOWED_USERS_JSON");
 
-// Single-use users (valid for 1 hour, only one login)
-const ONE_HOUR_MS = 60 * 60 * 1000;
+// Single-use users (valid for 1 hour, only one login) - set in env: SINGLE_USE_USERS_JSON
 let SINGLE_USE_USERS: {
   [username: string]: { password: string; expiresAt: number; used: boolean }
-} = {
-  "tempX": { password: "oneTimeA", expiresAt: Date.now() + ONE_HOUR_MS, used: false },
-  "tempY": { password: "oneTimeB", expiresAt: Date.now() + ONE_HOUR_MS, used: false }
-};
+} = loadEnvSingleUsers("SINGLE_USE_USERS_JSON");
 
 export async function POST(req: NextRequest) {
   const ip =
@@ -42,7 +46,7 @@ export async function POST(req: NextRequest) {
 
   const { username, password } = await req.json();
 
-  // Clean up expired single-use users (auto-revoke after 1 hour)
+  // Clean up expired single-use users
   Object.keys(SINGLE_USE_USERS).forEach(u => {
     if (SINGLE_USE_USERS[u].expiresAt < now) delete SINGLE_USE_USERS[u];
   });
@@ -55,30 +59,29 @@ export async function POST(req: NextRequest) {
     !singleUser.used &&
     singleUser.expiresAt > now
   ) {
-    SINGLE_USE_USERS[username].used = true; // Mark as used: cannot log in again!
+    SINGLE_USE_USERS[username].used = true;
     failedAttempts[ip] = { count: 0, lastAttempt: now };
+    // cookie expires after 1 hour (3600 sec)
     return NextResponse.json({ success: true, temporary: true }, {
       status: 200,
       headers: {
-        'Set-Cookie': `user=${encodeURIComponent(username)}; Path=/; HttpOnly; Max-Age=${ONE_HOUR_MS / 1000}`
+        'Set-Cookie': `user=${encodeURIComponent(username)}; Path=/; HttpOnly; Max-Age=3600`
       }
     });
   }
 
   // --- Permanent user login ---
   const found = ALLOWED_USERS.find(
-    u => u.username === username && u.password === password
+    (u: { username: string, password: string }) => u.username === username && u.password === password
   );
 
   if (!found) {
-    // Track failed attempt
     if (!failedAttempts[ip]) failedAttempts[ip] = { count: 0, lastAttempt: now };
     failedAttempts[ip].count += 1;
     failedAttempts[ip].lastAttempt = now;
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
-  // Reset failed attempt count on successful login
   failedAttempts[ip] = { count: 0, lastAttempt: now };
 
   return NextResponse.json({ success: true }, {
