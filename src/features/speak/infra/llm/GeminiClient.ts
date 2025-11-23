@@ -7,7 +7,7 @@ import { validateLlmOutput, LlmTurnDTO } from './parseAndValidate';
 const API_URL = '/api/gemini';
 
 // Helper: Coerce newLevel to "B1" | null
-function asB1OrNull(value: string | null | undefined): "B1" | null {
+function asB1OrNull(value: "B1" | null | undefined): "B1" | null {
   return value === "B1" ? "B1" : null;
 }
 

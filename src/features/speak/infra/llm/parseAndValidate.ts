@@ -12,8 +12,8 @@ export type LlmTurnDTO = {
   }>;
   hint: { responses: [string, string]; reasoning: string };
   keyPhrases: string[];
-  newLevel: string | null;
-  modelUserLevelGuess?: string | null;
+  newLevel: "B1" | null;
+  modelUserLevelGuess?: "B1" | null;
 };
 
 export function cleanToJsonSlice(text: string): string {
