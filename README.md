@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Conversational Model Dynamic Level Adjuster
 
-## Getting Started
+This is a small Next.js app for speaking practice with a conversational model that can adapt its difficulty level on the fly (A1–C2). The goal is to keep the conversation in a “sweet spot” where the learner is challenged but not completely lost.
 
-First, run the development server:
+## What it does
 
-```bash
+- Lets you pick a scenario (e.g. everyday situations, role‑plays) and a CEFR difficulty level.
+- Runs a turn‑by‑turn speaking session with an AI partner inside that scenario.
+- Tracks things like hint usage and translations and can adjust the level during the session.
+- Shows a short review at the end of the session.
+
+## How it works (high level)
+
+- When you start a session, the app creates a `SessionState` for the chosen scenario and level.
+- On each user message, the app calls a `continueSession` use case that:
+  - updates the `SessionState` (messages, turns, XP, streak, completion);
+  - decides whether the level should change (e.g. B1 → A2 or B2 → C1);
+  - returns a `SessionViewDTO` with what the UI needs to render.
+- If the level changes, the page shows a toast and briefly highlights the level chip so the change is visible, but not disruptive.
+
+### Speaking session page
+
+The main UI for the session lives in `src/features/speak/ui/SpeakingSessionPage.tsx`. It is responsible for:
+
+- Showing a scenario selector and a cancellable loading overlay while the session is being set up.
+- Rendering each message as a row in a two‑column layout:
+  - left: a `ChatBubble` (user or AI), with an optional translate button;
+  - right: a `NoteCard` with reasoning / hints for the latest AI message.
+- Keeping track of whether the learner opened a hint or clicked translate, and passing that information back into the session logic.
+- Auto‑scrolling the page to the latest message and keeping a fixed header with:
+  - the current level (with a small pulse on change),
+  - the scenario title,
+  - basic progress info (turns, XP, streak).
+
+## Tech stack
+
+- Framework: Next.js (App Router, bootstrapped with `create-next-app`).
+- Language: TypeScript (with a small amount of JavaScript).
+- Styling: CSS modules.
+
+## Getting started
+
+1. Clone the repo:
+
+2. Install dependencies:
+
+npm install
+
+3. Run the dev server:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Main entry points:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/page.tsx` — root page.
+- `src/features/speak/ui/SpeakingSessionPage.tsx` — speaking UI and session orchestration.
+- `src/features/speak/usecases/` — session start/continue logic and dynamic level adjustment.
 
-## Learn More
+## Ideas and next steps
 
-To learn more about Next.js, take a look at the following resources:
+- Plug this into a real LLM backend and experiment with different prompting strategies for level control.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+MIT.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
